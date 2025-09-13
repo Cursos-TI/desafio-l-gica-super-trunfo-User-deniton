@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <string.h>
+
+// Definição da estrutura para uma carta de cidade
+struct CartaCidade {
+    char estado[3];
+    char codigo_carta[10];
+    char nome_cidade[50];
+    long populacao;
+    float area;
+    long long pib;
+    int pontos_turisticos;
+};
+
+// Protótipo da função para preencher os dados de uma carta
+void preencher_carta(struct CartaCidade *carta);
+
+// Protótipo da função para exibir os detalhes de uma carta
+void exibir_carta(struct CartaCidade carta);
+
+int main() {
+    // Declaração de duas cartas
+    struct CartaCidade carta1, carta2;
+
+    printf("======================================\n");
+    printf("  SUPER TRUNFO - PAISES\n");
+    printf("======================================\n\n");
+
+    // --- Cadastro de Cartas ---
+    printf(">> Cadastro da Carta 1:\n");
+    preencher_carta(&carta1);
+
+    printf("\n>> Cadastro da Carta 2:\n");
+    preencher_carta(&carta2);
+
+    printf("\n--------------------------------------\n");
+    printf(">> Exibicao das Cartas Cadastradas:\n\n");
+    exibir_carta(carta1);
+    exibir_carta(carta2);
+
+    // --- Comparação de Cartas ---
+    printf("\n--------------------------------------\n");
+    printf(">> Comparando as Cartas (atributo: Populacao)\n");
+
+    // Lógica de comparação: o maior valor de população vence
+    if (carta1.populacao > carta2.populacao) {
+        printf("\n\n>>> A carta 1 (%s) vence!\n", carta1.nome_cidade);
+        printf("Com %ld habitantes, eh maior que a carta 2 (%s) com %ld habitantes.\n",
+               carta1.populacao, carta2.nome_cidade, carta2.populacao);
+    } else if (carta2.populacao > carta1.populacao) {
+        printf("\n\n>>> A carta 2 (%s) vence!\n", carta2.nome_cidade);
+        printf("Com %ld habitantes, eh maior que a carta 1 (%s) com %ld habitantes.\n",
+               carta2.populacao, carta1.nome_cidade, carta1.populacao);
+    } else {
+        printf("\n\n>>> As cartas empataram!\n");
+    }
+
+    printf("======================================\n");
+    return 0;
+}
+
+// Implementação da função para preencher a carta
+void preencher_carta(struct CartaCidade *carta) {
+    // Note o uso de getchar() para limpar o buffer do teclado antes de ler strings.
+    // Isso evita problemas com a leitura de entradas
+    printf("  Estado (ex: SP): ");
+    scanf("%s", carta->estado);
+    getchar();
+
+    printf("  Codigo da carta (ex: SP-01): ");
+    scanf("%s", carta->codigo_carta);
+    getchar();
+
+    printf("  Nome da cidade: ");
+    fgets(carta->nome_cidade, sizeof(carta->nome_cidade), stdin);
+    // Remove a nova linha ('\n') adicionada pelo fgets
+    carta->nome_cidade[strcspn(carta->nome_cidade, "\n")] = 0;
+
+    printf("  Populacao: ");
+    scanf("%ld", &carta->populacao);
+
+    printf("  Area (km2): ");
+    scanf("%f", &carta->area);
+
+    printf("  PIB (em R$): ");
+    scanf("%lld", &carta->pib);
+
+    printf("  Pontos turisticos: ");
+    scanf("%d", &carta->pontos_turisticos);
+}
+
+// Implementação da função para exibir os detalhes da carta
+void exibir_carta(struct CartaCidade carta) {
+    printf("--- Carta: %s ---\n", carta.nome_cidade);
+    printf("  Estado: %s\n", carta.estado);
+    printf("  Codigo da Carta: %s\n", carta.codigo_carta);
+    printf("  Populacao: %ld\n", carta.populacao);
+    printf("  Area: %.2f km2\n", carta.area);
+    printf("  PIB: %lld R$\n", carta.pib);
+    printf("  Pontos Turisticos: %d\n\n", carta.pontos_turisticos);
+}
